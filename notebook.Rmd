@@ -1,0 +1,92 @@
+---
+title: "NBA players data"
+output: html_notebook
+---
+
+Ana Escobar Llamazares UO264690
+
+Clasificación de la variable draft round usando como algoritmo Bagged AdaBoost (AdaBag).
+
+
+Leer el dataset https://www.kaggle.com/justinas/nba-players-data?select=all_seasons.csv
+```{r}
+dataset <- read.csv("all_seasons.csv")
+```
+
+
+Observar los datos del dataset y sus variables:
+```{r}
+head(dataset)
+```
+```{r}
+summary(dataset)
+```
+
+
+Convertir la variable draft_round a tipo factor (es la variable que se va a
+utilizar para la clasificación, tiene 7 valores únicos).
+La variable que se utiliza para aprender no puede ser de tipo char, debe ser de
+tipo factor para poder pronosticar la variable de la clase.
+```{r}
+dataset$draft_round <- as.factor(dataset$draft_round)
+dataset$country <- as.factor(dataset$country)
+```
+
+
+Compruebo que se ha modificado correctamente en el dataset la variable draft_round:
+```{r}
+summary(dataset)
+```
+
+Bagging es una manera muy popular y efectiva de estimación muy precisa reduciendo varianza y bias del dataset
+
+Bagging = Bootstrapping + Aggregation
+
+En R, los paquetes 'adabag' y 'ipred' son utilizados para desarrollar modelos basados en bagging. Se utilizará el paquete 'adabag'. Cargar también el resto de paquetes necesarios.
+```{r}
+library(adabag)
+library(plyr)
+library(ggplot2)
+library(caret)
+library(mlbench)
+library(rpart)
+```
+
+Selección de una submuestra del 80% de los datos para usarlos en el entrenamiento del modelo (fijo semilla para obtener siempre los mismos resultados):
+```{r}
+subset <- subset(x = dataset, select = c("draft_round", "net_rating", "age", "country"))
+set.seed(725)
+inTrain <- createDataPartition(y=subset$draft_round, 
+                               p=0.8, 
+                               list=FALSE)
+training <- dataset[inTrain,]
+testing <- dataset[-inTrain,]
+```
+
+
+Creación del modelo (fijo seimlla para obtener resultados resolutivos):
+```{r Creación del modelo}
+set.seed(725)
+adaboostModel <- bagging(draft_round ~ ., 
+                       data=training,
+                       #method='AdaBag',
+                       mfinal=25,
+                       maxdepth=3)
+```
+
+Importancia de cada variable:
+```{r}
+importanceplot(adaboostModel)
+#adaboostModel$importance
+```
+
+
+
+
+
+
+
+
+
+
+
