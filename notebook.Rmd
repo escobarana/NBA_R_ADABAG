@@ -29,7 +29,6 @@ La variable que se utiliza para aprender no puede ser de tipo char, debe ser de
 tipo factor para poder pronosticar la variable de la clase.
 ```{r}
 dataset$draft_round <- as.factor(dataset$draft_round)
-dataset$country <- as.factor(dataset$country)
 ```
 
 
@@ -42,21 +41,16 @@ Bagging es una manera muy popular y efectiva de estimación muy precisa reducien
 
 Bagging = Bootstrapping + Aggregation
 
-En R, los paquetes 'adabag' y 'ipred' son utilizados para desarrollar modelos basados en bagging. Se utilizará el paquete 'adabag'. Cargar también el resto de paquetes necesarios.
+En R, los paquetes 'adabag' y 'ipred' son utilizados para desarrollar modelos basados en bagging. Se utilizará el paquete 'adabag'. Cargo también el resto de paquetes necesarios.
 ```{r}
 library(adabag)
-library(plyr)
-library(ggplot2)
-library(caret)
-library(mlbench)
 library(rpart)
 ```
 
 Selección de una submuestra del 80% de los datos para usarlos en el entrenamiento del modelo (fijo semilla para obtener siempre los mismos resultados):
 ```{r}
-subset <- subset(x = dataset, select = c("draft_round", "net_rating", "age", "country"))
 set.seed(725)
-inTrain <- createDataPartition(y=subset$draft_round, 
+inTrain <- createDataPartition(y=dataset$draft_round, 
                                p=0.8, 
                                list=FALSE)
 training <- dataset[inTrain,]
@@ -64,21 +58,32 @@ testing <- dataset[-inTrain,]
 ```
 
 
-Creación del modelo (fijo seimlla para obtener resultados resolutivos):
-```{r Creación del modelo}
+Creación del modelo (fijo seimlla para obtener resultados resolutivos), aplico AdaBoost (paquete AdaBag):
+```{r}
 set.seed(725)
-adaboostModel <- bagging(draft_round ~ ., 
-                       data=training,
-                       #method='AdaBag',
-                       mfinal=25,
-                       maxdepth=3)
+adaboost <- bagging(draft_round ~ .,
+                    data=training,
+                    mfinal=20)
+yhat_adaboost <- predict(adaboost, newdata=training)$class
 ```
 
-Importancia de cada variable:
+Para saber la importancia de cada variable:
 ```{r}
-importanceplot(adaboostModel)
-#adaboostModel$importance
+importanceplot(adaboost)
+#adaboost$importance
 ```
+
+En el objeto yhat_adaboost está la predicció y con ella vamos a formar la tabla de confusión para el modelo.
+```{r}
+tabla_adaboost <- table(yhat_adaboost, training$draft_round)
+```
+
+Calcular la tasa de clasificación correcta, el resultado (a partir de él se puede deducir la capacidad de generalización):
+```{r}
+sum(diag(tabla_adaboost)) / sum(tabla_adaboost)
+```
+
+La tasa de clasificación con AdaBoost es alta, se puede concluir que la capacidad de generalización es buena.
 
 
 

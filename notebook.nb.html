@@ -1754,13 +1754,9 @@ summary {
 <p>Leer el dataset <a href="https://www.kaggle.com/justinas/nba-players-data?select=all_seasons.csv" class="uri">https://www.kaggle.com/justinas/nba-players-data?select=all_seasons.csv</a></p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBge3J9XG5cbmBgYCJ9 -->
-<pre class="r"><code>```{r}
-</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGF0YXNldCA8LSByZWFkLmNzdihcImFsbF9zZWFzb25zLmNzdlwiKVxuYGBgIn0= -->
+<pre class="r"><code>dataset &lt;- read.csv(&quot;all_seasons.csv&quot;)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiRXJyb3I6IHNlIGludGVudGEgdXNhciB1biBub21icmUgZGUgdmFyaWJsZSBkZSBsb25naXR1ZCBjZXJvXG4ifQ== -->
-<pre><code>Error: se intenta usar un nombre de varible de longitud cero</code></pre>
-<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>Observar los datos del dataset y sus variables:</p>
@@ -1779,6 +1775,9 @@ summary {
 <p>Convertir la variable draft_round a tipo factor (es la variable que se va a utilizar para la clasificación, tiene 7 valores únicos). La variable que se utiliza para aprender no puede ser de tipo char, debe ser de tipo factor para poder pronosticar la variable de la clase.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGF0YXNldCRkcmFmdF9yb3VuZCA8LSBhcy5mYWN0b3IoZGF0YXNldCRkcmFmdF9yb3VuZClcbmBgYCJ9 -->
+<pre class="r"><code>dataset$draft_round &lt;- as.factor(dataset$draft_round)</code></pre>
+<!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>Compruebo que se ha modificado correctamente en el dataset la variable draft_round:</p>
@@ -1791,75 +1790,69 @@ summary {
 <!-- rnb-text-begin -->
 <p>Bagging es una manera muy popular y efectiva de estimación muy precisa reduciendo varianza y bias del dataset</p>
 <p>Bagging = Bootstrapping + Aggregation</p>
-<p>En R, los paquetes ‘adabag’ y ‘ipred’ son utilizados para desarrollar modelos basados en bagging. Se utilizará el paquete ‘adabag’. Cargar también el resto de paquetes necesarios.</p>
+<p>En R, los paquetes ‘adabag’ y ‘ipred’ son utilizados para desarrollar modelos basados en bagging. Se utilizará el paquete ‘adabag’. Cargo también el resto de paquetes necesarios.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShhZGFiYWcpXG5cbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShhZGFiYWcpXG5saWJyYXJ5KHJwYXJ0KVxuYGBgIn0= -->
 <pre class="r"><code>library(adabag)
-</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoicGFja2FnZSCRYWRhYmFnkiB3YXMgYnVpbHQgdW5kZXIgUiB2ZXJzaW9uIDQuMC4zTG9hZGluZyByZXF1aXJlZCBwYWNrYWdlOiBycGFydFxuTG9hZGluZyByZXF1aXJlZCBwYWNrYWdlOiBjYXJldFxucGFja2FnZSCRY2FyZXSSIHdhcyBidWlsdCB1bmRlciBSIHZlcnNpb24gNC4wLjNMb2FkaW5nIHJlcXVpcmVkIHBhY2thZ2U6IGxhdHRpY2VcbkxvYWRpbmcgcmVxdWlyZWQgcGFja2FnZTogZ2dwbG90MlxuUmVnaXN0ZXJlZCBTMyBtZXRob2Qgb3ZlcndyaXR0ZW4gYnkgJ2RhdGEudGFibGUnOlxuICBtZXRob2QgICAgICAgICAgIGZyb21cbiAgcHJpbnQuZGF0YS50YWJsZSAgICAgXG5Mb2FkaW5nIHJlcXVpcmVkIHBhY2thZ2U6IGZvcmVhY2hcbnBhY2thZ2UgkWZvcmVhY2iSIHdhcyBidWlsdCB1bmRlciBSIHZlcnNpb24gNC4wLjNMb2FkaW5nIHJlcXVpcmVkIHBhY2thZ2U6IGRvUGFyYWxsZWxcbnBhY2thZ2UgkWRvUGFyYWxsZWySIHdhcyBidWlsdCB1bmRlciBSIHZlcnNpb24gNC4wLjNMb2FkaW5nIHJlcXVpcmVkIHBhY2thZ2U6IGl0ZXJhdG9yc1xucGFja2FnZSCRaXRlcmF0b3JzkiB3YXMgYnVpbHQgdW5kZXIgUiB2ZXJzaW9uIDQuMC4zTG9hZGluZyByZXF1aXJlZCBwYWNrYWdlOiBwYXJhbGxlbFxuIn0= -->
-<pre><code>package 㤼㸱adabag㤼㸲 was built under R version 4.0.3Loading required package: rpart
-Loading required package: caret
-package 㤼㸱caret㤼㸲 was built under R version 4.0.3Loading required package: lattice
-Loading required package: ggplot2
-Registered S3 method overwritten by &#39;data.table&#39;:
-  method           from
-  print.data.table     
-Loading required package: foreach
-package 㤼㸱foreach㤼㸲 was built under R version 4.0.3Loading required package: doParallel
-package 㤼㸱doParallel㤼㸲 was built under R version 4.0.3Loading required package: iterators
-package 㤼㸱iterators㤼㸲 was built under R version 4.0.3Loading required package: parallel</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShhZGFiYWcpXG5saWJyYXJ5KHBseXIpXG5saWJyYXJ5KGdncGxvdDIpXG5saWJyYXJ5KGNhcmV0KVxubGlicmFyeShtbGJlbmNoKVxuYGBgIn0= -->
-<pre class="r"><code>library(adabag)
-library(plyr)
-library(ggplot2)
-library(caret)
-library(mlbench)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoicGFja2FnZSDjpLzjuLFtbGJlbmNo46S847iyIHdhcyBidWlsdCB1bmRlciBSIHZlcnNpb24gNC4wLjNcbiJ9 -->
-<pre><code>package 㤼㸱mlbench㤼㸲 was built under R version 4.0.3</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShycGFydClcbmBgYCJ9 -->
-<pre class="r"><code>library(rpart)</code></pre>
+library(rpart)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>Selección de una submuestra del 80% de los datos para usarlos en el entrenamiento del modelo (fijo semilla para obtener siempre los mismos resultados):</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>Creación del modelo (fijo seimlla para obtener resultados resolutivos):</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYWRhYm9vc3RNb2RlbCA8LSB0cmFpbihkcmFmdF9yb3VuZCB+IC4sIFxuICAgICAgICAgICAgICAgICAgICAgICBjb2VmbGVhcm49J0ZyZXVuZCcsXG4gICAgICAgICAgICAgICAgICAgICAgIGRhdGE9dHJhaW5pbmcsXG4gICAgICAgICAgICAgICAgICAgICAgIG1ldGhvZD0nQWRhQmFnJyxcbiAgICAgICAgICAgICAgICAgICAgICAgbWZpbmFsPTIwKVxuXG5gYGAifQ== -->
-<pre class="r"><code>adaboostModel &lt;- train(draft_round ~ ., 
-                       coeflearn=&#39;Freund&#39;,
-                       data=training,
-                       method=&#39;AdaBag&#39;,
-                       mfinal=20)
-</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoibW9kZWwgZml0IGZhaWxlZCBmb3IgUmVzYW1wbGUwMTogbWF4ZGVwdGg9MSwgbWZpbmFsPTE1MCBFcnJvciBpbiAoZnVuY3Rpb24gKGZvcm11bGEsIGRhdGEsIG1maW5hbCA9IDEwMCwgY29udHJvbCwgcGFyID0gRkFMU0UsICA6IFxuICBlbCBhcmd1bWVudG8gZm9ybWFsIFwibWZpbmFsXCIgY29uY3VlcmRhIGNvbiBt5pi847mhbHRpcGxlcyBhcmd1bWVudG9zIGVzcGVjaWZpY2Fkb3NcbiJ9 -->
-<pre><code>model fit failed for Resample01: maxdepth=1, mfinal=150 Error in (function (formula, data, mfinal = 100, control, par = FALSE,  : 
-  el argumento formal &quot;mfinal&quot; concuerda con m昼㹡ltiples argumentos especificados</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>Importancia de cada variable:</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaW1wb3J0YW5jZXBsb3QoYWRhYm9vc3RNb2RlbClcbiNhZGFib29zdE1vZGVsJGltcG9ydGFuY2VcbmBgYCJ9 -->
-<pre class="r"><code>importanceplot(adaboostModel)
-#adaboostModel$importance</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2V0LnNlZWQoNzI1KVxuaW5UcmFpbiA8LSBjcmVhdGVEYXRhUGFydGl0aW9uKHk9ZGF0YXNldCRkcmFmdF9yb3VuZCwgXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgcD0wLjgsIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxpc3Q9RkFMU0UpXG50cmFpbmluZyA8LSBkYXRhc2V0W2luVHJhaW4sXVxudGVzdGluZyA8LSBkYXRhc2V0Wy1pblRyYWluLF1cbmBgYCJ9 -->
+<pre class="r"><code>set.seed(725)
+inTrain &lt;- createDataPartition(y=dataset$draft_round, 
+                               p=0.8, 
+                               list=FALSE)
+training &lt;- dataset[inTrain,]
+testing &lt;- dataset[-inTrain,]</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
+<p>Creación del modelo (fijo seimlla para obtener resultados resolutivos), aplico AdaBoost (paquete AdaBag):</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2V0LnNlZWQoNzI1KVxuYWRhYm9vc3QgPC0gYmFnZ2luZyhkcmFmdF9yb3VuZCB+IC4sXG4gICAgICAgICAgICAgICAgICAgIGRhdGE9dHJhaW5pbmcsXG4gICAgICAgICAgICAgICAgICAgIG1maW5hbD0yMClcbnloYXRfYWRhYm9vc3QgPC0gcHJlZGljdChhZGFib29zdCwgbmV3ZGF0YT10cmFpbmluZykkY2xhc3NcbmBgYCJ9 -->
+<pre class="r"><code>set.seed(725)
+adaboost &lt;- bagging(draft_round ~ .,
+                    data=training,
+                    mfinal=20)
+yhat_adaboost &lt;- predict(adaboost, newdata=training)$class</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Para saber la importancia de cada variable:</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaW1wb3J0YW5jZXBsb3QoYWRhYm9vc3QpXG4jYWRhYm9vc3QkaW1wb3J0YW5jZVxuYGBgIn0= -->
+<pre class="r"><code>importanceplot(adaboost)
+#adaboost$importance</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>En el objeto yhat_adaboost está la predicció y con ella vamos a formar la tabla de confusión para el modelo.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudGFibGFfYWRhYm9vc3QgPC0gdGFibGUoeWhhdF9hZGFib29zdCwgdHJhaW5pbmckZHJhZnRfcm91bmQpXG5gYGAifQ== -->
+<pre class="r"><code>tabla_adaboost &lt;- table(yhat_adaboost, training$draft_round)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Calcular la tasa de clasificación correcta, el resultado (a partir de él se puede deducir la capacidad de generalización):</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3VtKGRpYWcodGFibGFfYWRhYm9vc3QpKSAvIHN1bSh0YWJsYV9hZGFib29zdClcbmBgYCJ9 -->
+<pre class="r"><code>sum(diag(tabla_adaboost)) / sum(tabla_adaboost)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>La tasa de clasificación con AdaBoost es alta, se puede concluir que la capacidad de generalización es buena.</p>
 <!-- rnb-text-end -->
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIk5CQSBwbGF5ZXJzIGRhdGEiDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCi0tLQ0KDQpBbmEgRXNjb2JhciBMbGFtYXphcmVzIFVPMjY0NjkwDQoNCkNsYXNpZmljYWNpw7NuIGRlIGxhIHZhcmlhYmxlIGRyYWZ0IHJvdW5kIHVzYW5kbyBjb21vIGFsZ29yaXRtbyBCYWdnZWQgQWRhQm9vc3QgKEFkYUJhZykuDQoNCg0KTGVlciBlbCBkYXRhc2V0IGh0dHBzOi8vd3d3LmthZ2dsZS5jb20vanVzdGluYXMvbmJhLXBsYXllcnMtZGF0YT9zZWxlY3Q9YWxsX3NlYXNvbnMuY3N2DQpgYGB7cn0NCmRhdGFzZXQgPC0gcmVhZC5jc3YoImFsbF9zZWFzb25zLmNzdiIpDQpgYGANCg0KDQpPYnNlcnZhciBsb3MgZGF0b3MgZGVsIGRhdGFzZXQgeSBzdXMgdmFyaWFibGVzOg0KYGBge3J9DQpoZWFkKGRhdGFzZXQpDQpgYGANCmBgYHtyfQ0Kc3VtbWFyeShkYXRhc2V0KQ0KYGBgDQoNCg0KQ29udmVydGlyIGxhIHZhcmlhYmxlIGRyYWZ0X3JvdW5kIGEgdGlwbyBmYWN0b3IgKGVzIGxhIHZhcmlhYmxlIHF1ZSBzZSB2YSBhDQp1dGlsaXphciBwYXJhIGxhIGNsYXNpZmljYWNpw7NuLCB0aWVuZSA3IHZhbG9yZXMgw7puaWNvcykuDQpMYSB2YXJpYWJsZSBxdWUgc2UgdXRpbGl6YSBwYXJhIGFwcmVuZGVyIG5vIHB1ZWRlIHNlciBkZSB0aXBvIGNoYXIsIGRlYmUgc2VyIGRlDQp0aXBvIGZhY3RvciBwYXJhIHBvZGVyIHByb25vc3RpY2FyIGxhIHZhcmlhYmxlIGRlIGxhIGNsYXNlLg0KYGBge3J9DQpkYXRhc2V0JGRyYWZ0X3JvdW5kIDwtIGFzLmZhY3RvcihkYXRhc2V0JGRyYWZ0X3JvdW5kKQ0KZGF0YXNldCRjb3VudHJ5IDwtIGFzLmZhY3RvcihkYXRhc2V0JGNvdW50cnkpDQpgYGANCg0KDQpDb21wcnVlYm8gcXVlIHNlIGhhIG1vZGlmaWNhZG8gY29ycmVjdGFtZW50ZSBlbiBlbCBkYXRhc2V0IGxhIHZhcmlhYmxlIGRyYWZ0X3JvdW5kOg0KYGBge3J9DQpzdW1tYXJ5KGRhdGFzZXQpDQpgYGANCg0KQmFnZ2luZyBlcyB1bmEgbWFuZXJhIG11eSBwb3B1bGFyIHkgZWZlY3RpdmEgZGUgZXN0aW1hY2nDs24gbXV5IHByZWNpc2EgcmVkdWNpZW5kbyB2YXJpYW56YSB5IGJpYXMgZGVsIGRhdGFzZXQNCg0KQmFnZ2luZyA9IEJvb3RzdHJhcHBpbmcgKyBBZ2dyZWdhdGlvbg0KDQpFbiBSLCBsb3MgcGFxdWV0ZXMgJ2FkYWJhZycgeSAnaXByZWQnIHNvbiB1dGlsaXphZG9zIHBhcmEgZGVzYXJyb2xsYXIgbW9kZWxvcyBiYXNhZG9zIGVuIGJhZ2dpbmcuIFNlIHV0aWxpemFyw6EgZWwgcGFxdWV0ZSAnYWRhYmFnJy4gQ2FyZ2FyIHRhbWJpw6luIGVsIHJlc3RvIGRlIHBhcXVldGVzIG5lY2VzYXJpb3MuDQpgYGB7cn0NCmxpYnJhcnkoYWRhYmFnKQ0KbGlicmFyeShwbHlyKQ0KbGlicmFyeShnZ3Bsb3QyKQ0KbGlicmFyeShjYXJldCkNCmxpYnJhcnkobWxiZW5jaCkNCmxpYnJhcnkocnBhcnQpDQpgYGANCg0KU2VsZWNjacOzbiBkZSB1bmEgc3VibXVlc3RyYSBkZWwgODAlIGRlIGxvcyBkYXRvcyBwYXJhIHVzYXJsb3MgZW4gZWwgZW50cmVuYW1pZW50byBkZWwgbW9kZWxvIChmaWpvIHNlbWlsbGEgcGFyYSBvYnRlbmVyIHNpZW1wcmUgbG9zIG1pc21vcyByZXN1bHRhZG9zKToNCmBgYHtyfQ0Kc3Vic2V0IDwtIHN1YnNldCh4ID0gZGF0YXNldCwgc2VsZWN0ID0gYygiZHJhZnRfcm91bmQiLCAibmV0X3JhdGluZyIsICJhZ2UiLCAiY291bnRyeSIpKQ0Kc2V0LnNlZWQoNzI1KQ0KaW5UcmFpbiA8LSBjcmVhdGVEYXRhUGFydGl0aW9uKHk9c3Vic2V0JGRyYWZ0X3JvdW5kLCANCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBwPTAuOCwgDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGlzdD1GQUxTRSkNCnRyYWluaW5nIDwtIGRhdGFzZXRbaW5UcmFpbixdDQp0ZXN0aW5nIDwtIGRhdGFzZXRbLWluVHJhaW4sXQ0KYGBgDQoNCg0KQ3JlYWNpw7NuIGRlbCBtb2RlbG8gKGZpam8gc2VpbWxsYSBwYXJhIG9idGVuZXIgcmVzdWx0YWRvcyByZXNvbHV0aXZvcyk6DQpgYGB7ciBDcmVhY2nDs24gZGVsIG1vZGVsb30NCnNldC5zZWVkKDcyNSkNCmFkYWJvb3N0TW9kZWwgPC0gYmFnZ2luZyhkcmFmdF9yb3VuZCB+IC4sIA0KICAgICAgICAgICAgICAgICAgICAgICBkYXRhPXRyYWluaW5nLA0KICAgICAgICAgICAgICAgICAgICAgICAjbWV0aG9kPSdBZGFCYWcnLA0KICAgICAgICAgICAgICAgICAgICAgICBtZmluYWw9MjUsDQogICAgICAgICAgICAgICAgICAgICAgIG1heGRlcHRoPTMpDQpgYGANCg0KSW1wb3J0YW5jaWEgZGUgY2FkYSB2YXJpYWJsZToNCmBgYHtyfQ0KaW1wb3J0YW5jZXBsb3QoYWRhYm9vc3RNb2RlbCkNCiNhZGFib29zdE1vZGVsJGltcG9ydGFuY2UNCmBgYA0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg==</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIk5CQSBwbGF5ZXJzIGRhdGEiDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCi0tLQ0KDQpBbmEgRXNjb2JhciBMbGFtYXphcmVzIFVPMjY0NjkwDQoNCkNsYXNpZmljYWNpw7NuIGRlIGxhIHZhcmlhYmxlIGRyYWZ0IHJvdW5kIHVzYW5kbyBjb21vIGFsZ29yaXRtbyBCYWdnZWQgQWRhQm9vc3QgKEFkYUJhZykuDQoNCg0KTGVlciBlbCBkYXRhc2V0IGh0dHBzOi8vd3d3LmthZ2dsZS5jb20vanVzdGluYXMvbmJhLXBsYXllcnMtZGF0YT9zZWxlY3Q9YWxsX3NlYXNvbnMuY3N2DQpgYGB7cn0NCmRhdGFzZXQgPC0gcmVhZC5jc3YoImFsbF9zZWFzb25zLmNzdiIpDQpgYGANCg0KDQpPYnNlcnZhciBsb3MgZGF0b3MgZGVsIGRhdGFzZXQgeSBzdXMgdmFyaWFibGVzOg0KYGBge3J9DQpoZWFkKGRhdGFzZXQpDQpgYGANCmBgYHtyfQ0Kc3VtbWFyeShkYXRhc2V0KQ0KYGBgDQoNCg0KQ29udmVydGlyIGxhIHZhcmlhYmxlIGRyYWZ0X3JvdW5kIGEgdGlwbyBmYWN0b3IgKGVzIGxhIHZhcmlhYmxlIHF1ZSBzZSB2YSBhDQp1dGlsaXphciBwYXJhIGxhIGNsYXNpZmljYWNpw7NuLCB0aWVuZSA3IHZhbG9yZXMgw7puaWNvcykuDQpMYSB2YXJpYWJsZSBxdWUgc2UgdXRpbGl6YSBwYXJhIGFwcmVuZGVyIG5vIHB1ZWRlIHNlciBkZSB0aXBvIGNoYXIsIGRlYmUgc2VyIGRlDQp0aXBvIGZhY3RvciBwYXJhIHBvZGVyIHByb25vc3RpY2FyIGxhIHZhcmlhYmxlIGRlIGxhIGNsYXNlLg0KYGBge3J9DQpkYXRhc2V0JGRyYWZ0X3JvdW5kIDwtIGFzLmZhY3RvcihkYXRhc2V0JGRyYWZ0X3JvdW5kKQ0KYGBgDQoNCg0KQ29tcHJ1ZWJvIHF1ZSBzZSBoYSBtb2RpZmljYWRvIGNvcnJlY3RhbWVudGUgZW4gZWwgZGF0YXNldCBsYSB2YXJpYWJsZSBkcmFmdF9yb3VuZDoNCmBgYHtyfQ0Kc3VtbWFyeShkYXRhc2V0KQ0KYGBgDQoNCkJhZ2dpbmcgZXMgdW5hIG1hbmVyYSBtdXkgcG9wdWxhciB5IGVmZWN0aXZhIGRlIGVzdGltYWNpw7NuIG11eSBwcmVjaXNhIHJlZHVjaWVuZG8gdmFyaWFuemEgeSBiaWFzIGRlbCBkYXRhc2V0DQoNCkJhZ2dpbmcgPSBCb290c3RyYXBwaW5nICsgQWdncmVnYXRpb24NCg0KRW4gUiwgbG9zIHBhcXVldGVzICdhZGFiYWcnIHkgJ2lwcmVkJyBzb24gdXRpbGl6YWRvcyBwYXJhIGRlc2Fycm9sbGFyIG1vZGVsb3MgYmFzYWRvcyBlbiBiYWdnaW5nLiBTZSB1dGlsaXphcsOhIGVsIHBhcXVldGUgJ2FkYWJhZycuIENhcmdvIHRhbWJpw6luIGVsIHJlc3RvIGRlIHBhcXVldGVzIG5lY2VzYXJpb3MuDQpgYGB7cn0NCmxpYnJhcnkoYWRhYmFnKQ0KbGlicmFyeShycGFydCkNCmBgYA0KDQpTZWxlY2Npw7NuIGRlIHVuYSBzdWJtdWVzdHJhIGRlbCA4MCUgZGUgbG9zIGRhdG9zIHBhcmEgdXNhcmxvcyBlbiBlbCBlbnRyZW5hbWllbnRvIGRlbCBtb2RlbG8gKGZpam8gc2VtaWxsYSBwYXJhIG9idGVuZXIgc2llbXByZSBsb3MgbWlzbW9zIHJlc3VsdGFkb3MpOg0KYGBge3J9DQpzZXQuc2VlZCg3MjUpDQppblRyYWluIDwtIGNyZWF0ZURhdGFQYXJ0aXRpb24oeT1kYXRhc2V0JGRyYWZ0X3JvdW5kLCANCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBwPTAuOCwgDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGlzdD1GQUxTRSkNCnRyYWluaW5nIDwtIGRhdGFzZXRbaW5UcmFpbixdDQp0ZXN0aW5nIDwtIGRhdGFzZXRbLWluVHJhaW4sXQ0KYGBgDQoNCg0KQ3JlYWNpw7NuIGRlbCBtb2RlbG8gKGZpam8gc2VpbWxsYSBwYXJhIG9idGVuZXIgcmVzdWx0YWRvcyByZXNvbHV0aXZvcyksIGFwbGljbyBBZGFCb29zdCAocGFxdWV0ZSBBZGFCYWcpOg0KYGBge3J9DQpzZXQuc2VlZCg3MjUpDQphZGFib29zdCA8LSBiYWdnaW5nKGRyYWZ0X3JvdW5kIH4gLiwNCiAgICAgICAgICAgICAgICAgICAgZGF0YT10cmFpbmluZywNCiAgICAgICAgICAgICAgICAgICAgbWZpbmFsPTIwKQ0KeWhhdF9hZGFib29zdCA8LSBwcmVkaWN0KGFkYWJvb3N0LCBuZXdkYXRhPXRyYWluaW5nKSRjbGFzcw0KYGBgDQoNClBhcmEgc2FiZXIgbGEgaW1wb3J0YW5jaWEgZGUgY2FkYSB2YXJpYWJsZToNCmBgYHtyfQ0KaW1wb3J0YW5jZXBsb3QoYWRhYm9vc3QpDQojYWRhYm9vc3QkaW1wb3J0YW5jZQ0KYGBgDQoNCkVuIGVsIG9iamV0byB5aGF0X2FkYWJvb3N0IGVzdMOhIGxhIHByZWRpY2Npw7MgeSBjb24gZWxsYSB2YW1vcyBhIGZvcm1hciBsYSB0YWJsYSBkZSBjb25mdXNpw7NuIHBhcmEgZWwgbW9kZWxvLg0KYGBge3J9DQp0YWJsYV9hZGFib29zdCA8LSB0YWJsZSh5aGF0X2FkYWJvb3N0LCB0cmFpbmluZyRkcmFmdF9yb3VuZCkNCmBgYA0KDQpDYWxjdWxhciBsYSB0YXNhIGRlIGNsYXNpZmljYWNpw7NuIGNvcnJlY3RhLCBlbCByZXN1bHRhZG8gKGEgcGFydGlyIGRlIMOpbCBzZSBwdWVkZSBkZWR1Y2lyIGxhIGNhcGFjaWRhZCBkZSBnZW5lcmFsaXphY2nDs24pOg0KYGBge3J9DQpzdW0oZGlhZyh0YWJsYV9hZGFib29zdCkpIC8gc3VtKHRhYmxhX2FkYWJvb3N0KQ0KYGBgDQoNCkxhIHRhc2EgZGUgY2xhc2lmaWNhY2nDs24gY29uIEFkYUJvb3N0IGVzIGFsdGEsIHNlIHB1ZWRlIGNvbmNsdWlyIHF1ZSBsYSBjYXBhY2lkYWQgZGUgZ2VuZXJhbGl6YWNpw7NuIGVzIGJ1ZW5hLg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg==</div>
 
 
 
